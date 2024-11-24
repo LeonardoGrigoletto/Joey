@@ -35,7 +35,7 @@ func (d *Dataframe) printRecords(colWidths []int, numberOfRecords int) {
 	}
 }
 
-func (d *Dataframe) Show(size ...int) {
+func (d *Dataframe) calculateNumberOfRecordsToPrint(size ...int) int {
 	numberOfRecordsToPrint := len(d.rows)
 	if len(size) > 0 {
 		numberOfRecordsToPrint = size[0]
@@ -43,6 +43,10 @@ func (d *Dataframe) Show(size ...int) {
 	if numberOfRecordsToPrint > len(d.rows) {
 		numberOfRecordsToPrint = len(d.rows)
 	}
+	return numberOfRecordsToPrint
+}
+
+func (d *Dataframe) calculateColWidthsToPrint() []int {
 	colWidths := make([]int, len(d.headers))
 	for i, header := range d.headers {
 		colWidths[i] = len(header)
@@ -54,19 +58,25 @@ func (d *Dataframe) Show(size ...int) {
 			}
 		}
 	}
+	return colWidths
+}
 
+func (d *Dataframe) Show(size ...int) {
+	numberOfRecordsToPrint := d.calculateNumberOfRecordsToPrint(size...)
+	colWidths := d.calculateColWidthsToPrint()
 	separator := d.createSeparator(colWidths)
-	fmt.Println(separator)
 
 	// HEADER
+	fmt.Println(separator)
 	d.printHeader(colWidths)
 	fmt.Println("|")
-
 	fmt.Println(separator)
 
 	// DATA
 	d.printRecords(colWidths, numberOfRecordsToPrint)
 	fmt.Println(separator)
+
+	// FOOTER
 	fmt.Printf("Showing %d/%d records\n", numberOfRecordsToPrint, len(d.rows))
 	fmt.Println("")
 }
