@@ -9,40 +9,37 @@ import (
 	"strconv"
 )
 
-func createAxis(record []string) (Row, Column, error) {
+func createRow(record []string) (Row, error) {
 	newRow := Row{data: make([]Cell, len(record))}
-	var newColumn Column
-
 	if reflect.TypeOf(record[0]) == reflect.TypeOf("string") {
 		for i, v := range record {
 			newRow.data[i] = StrCell{data: v}
 		}
-		*newColumn.data = append(*newColumn.data, newRow.data[0])
-		return newRow, newColumn, nil
+		return newRow, nil
 	} else if reflect.TypeOf(record[0]) == reflect.TypeOf(10) {
 		for i, v := range record {
 			cell, err := strconv.ParseInt(v, 10, 64)
 			if err != nil {
 				panic("Error converting string to int.")
 			}
-			newRow.data[i] = IntCell{data: cell}
+			newRow.data[i] = Int64Cell{data: cell}
 		}
-		return newRow, newColumn, nil
+		return newRow, nil
 	} else if reflect.TypeOf(record[0]) == reflect.TypeOf(10.0) {
 		for i, v := range record {
 			cell, err := strconv.ParseFloat(v, 64)
 			if err != nil {
 				panic("Error converting string to int.")
 			}
-			newRow.data[i] = FloatCell{data: cell}
+			newRow.data[i] = Float64Cell{data: cell}
 		}
-		return newRow, newColumn, nil
+		return newRow, nil
 	} else {
-		return nil, nil, errors.New("Unknwon types.")
+		return Row{data: []Cell{}}, errors.New("The specified type is not known")
 	}
 }
 
-func NewFromCsv(path string) Dataframe {
+func NewFromCsv(path string) (Dataframe, error) {
 	f, err := os.Open(path)
 	if err != nil {
 		fmt.Printf("Unable to open the file: %s %s", path, err)
@@ -58,13 +55,28 @@ func NewFromCsv(path string) Dataframe {
 	records = records[1:]
 
 	rows := make([]Row, len(records))
+	columns := make([]Column, len(header))
+	for i := range header {
+		var col Column
+		columns[i] = col.New(len(records))
+	}
+
 	for i, record := range records {
-		rows[i] = createAxis(record)
+		row, err := createRow(record)
+		if err != nil {
+			return Dataframe{}, err
+		}
+		rows[i] = row
+
+		for j := range row.data {
+			columns[j].data[i] = &row.data[j]
+		}
 	}
 
 	dataframe := Dataframe{
 		headers: header,
 		rows:    rows,
+		columns: columns,
 	}
-	return dataframe
+	return dataframe, nil
 }

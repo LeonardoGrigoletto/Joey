@@ -1,6 +1,7 @@
 package joey
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
 	"slices"
@@ -10,6 +11,41 @@ import (
 type Dataframe struct {
 	headers []string
 	rows    []Row
+	columns []Column
+}
+
+func (d *Dataframe) Column(name string) (Column, error) {
+	columnIndex, err := d.getColumnIndex(name)
+	if err != nil {
+		return Column{}, err
+	}
+	return d.columns[columnIndex], nil
+}
+
+func (d *Dataframe) Convert(columnName string, to string) (Dataframe, error) {
+	columnIndex, err := d.getColumnIndex(columnName)
+	if err != nil {
+		return Dataframe{}, err
+	}
+
+	for i, cellPtr := range d.columns[columnIndex].data {
+		if cellPtr == nil {
+			return Dataframe{}, errors.New("nil cell pointer found")
+		}
+
+		cell := *cellPtr
+		convertedCell, err := cell.Convert(to)
+		if err != nil {
+			return Dataframe{}, err
+		}
+
+		*d.columns[columnIndex].data[i] = convertedCell
+	}
+	return Dataframe{
+		headers: d.headers,
+		rows:    d.rows,
+		columns: d.columns,
+	}, nil
 }
 
 func (d *Dataframe) createSeparator(colWidths []int) string {
@@ -29,7 +65,7 @@ func (d *Dataframe) printHeader(colWidths []int) {
 func (d *Dataframe) printRecords(colWidths []int, numberOfRecords int) {
 	for i := 0; i < numberOfRecords; i++ {
 		for j, cell := range d.rows[i].data {
-			fmt.Printf("| %-*s ", colWidths[j], cell.GetData())
+			fmt.Printf("| %-*s ", colWidths[j], cell.GetFormattedData())
 		}
 		fmt.Println("|")
 	}
@@ -46,13 +82,13 @@ func (d *Dataframe) calculateNumberOfRecordsToPrint(size ...int) int {
 	return numberOfRecordsToPrint
 }
 
-func (d *Dataframe) calculateColWidthsToPrint() []int {
+func (d *Dataframe) calculateColWidthsToPrint(size ...int) []int {
 	colWidths := make([]int, len(d.headers))
 	for i, header := range d.headers {
 		colWidths[i] = len(header)
 	}
-	for _, row := range d.rows {
-		for i, cell := range row.data {
+	for k := 0; k < size[0]; k++ {
+		for i, cell := range d.rows[k].data {
 			if cell.Length() > colWidths[i] {
 				colWidths[i] = cell.Length()
 			}
@@ -63,7 +99,7 @@ func (d *Dataframe) calculateColWidthsToPrint() []int {
 
 func (d *Dataframe) Show(size ...int) {
 	numberOfRecordsToPrint := d.calculateNumberOfRecordsToPrint(size...)
-	colWidths := d.calculateColWidthsToPrint()
+	colWidths := d.calculateColWidthsToPrint(size...)
 	separator := d.createSeparator(colWidths)
 
 	// HEADER
@@ -92,21 +128,24 @@ func (d *Dataframe) ShowTypes() {
 	fmt.Println("")
 }
 
-func (d *Dataframe) getColumnIndex(colName string) int {
+func (d *Dataframe) getColumnIndex(colName string) (int, error) {
 	firstIndex := slices.Index(d.headers, colName)
-	return firstIndex
+	if firstIndex < 0 {
+		return firstIndex, errors.New("The specified column name does not exist in the dataframe. Column: " + colName)
+	}
+	return firstIndex, nil
 }
 
-func (d *Dataframe) RemoveCol(colName string) Dataframe {
-	firstIndex := d.getColumnIndex(colName)
-	if firstIndex < 0 {
-		panic("The given column: " + colName + ", does not exist on the dataframe.")
+func (d *Dataframe) RemoveCol(colName string) (Dataframe, error) {
+	firstIndex, err := d.getColumnIndex(colName)
+	if err != nil {
+		return Dataframe{}, err
 	}
 	d.headers = slices.Delete(d.headers, firstIndex, firstIndex+1)
 	for index := range d.rows {
 		d.rows[index].data = slices.Delete(d.rows[index].data, firstIndex, firstIndex+1)
 	}
-	return Dataframe{headers: d.headers, rows: d.rows}
+	return Dataframe{headers: d.headers, rows: d.rows, columns: d.columns}, nil
 }
 
 // func (d *Dataframe) Sum(columns ...string) Dataframe {
