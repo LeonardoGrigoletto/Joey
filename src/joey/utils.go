@@ -16,16 +16,67 @@ func createRow(record []string) (Row, error) {
 			newRow.data[i] = StrCell{data: v}
 		}
 		return newRow, nil
-	} else if reflect.TypeOf(record[0]) == reflect.TypeOf(10) {
+	} else if reflect.TypeOf(record[0]) == reflect.TypeOf(int(10)) {
 		for i, v := range record {
 			cell, err := strconv.ParseInt(v, 10, 64)
 			if err != nil {
 				panic("Error converting string to int.")
 			}
-			newRow.data[i] = Int64Cell{data: cell}
+			intCell := int(cell)
+			newRow.data[i] = IntCell{data: intCell}
 		}
 		return newRow, nil
-	} else if reflect.TypeOf(record[0]) == reflect.TypeOf(10.0) {
+	} else if reflect.TypeOf(record[0]) == reflect.TypeOf(int8(10)) {
+		for i, v := range record {
+			cell, err := strconv.ParseInt(v, 10, 64)
+			if err != nil {
+				panic("Error converting string to int.")
+			}
+			intCell := int8(cell)
+			newRow.data[i] = Int8Cell{data: intCell}
+		}
+		return newRow, nil
+	} else if reflect.TypeOf(record[0]) == reflect.TypeOf(int16(10)) {
+		for i, v := range record {
+			cell, err := strconv.ParseInt(v, 10, 64)
+			if err != nil {
+				panic("Error converting string to int.")
+			}
+			intCell := int16(cell)
+			newRow.data[i] = Int16Cell{data: intCell}
+		}
+		return newRow, nil
+	} else if reflect.TypeOf(record[0]) == reflect.TypeOf(int32(10)) {
+		for i, v := range record {
+			cell, err := strconv.ParseInt(v, 10, 64)
+			if err != nil {
+				panic("Error converting string to int.")
+			}
+			intCell := int32(cell)
+			newRow.data[i] = Int32Cell{data: intCell}
+		}
+		return newRow, nil
+	} else if reflect.TypeOf(record[0]) == reflect.TypeOf(int64(10)) {
+		for i, v := range record {
+			cell, err := strconv.ParseInt(v, 10, 64)
+			if err != nil {
+				panic("Error converting string to int.")
+			}
+			intCell := int64(cell)
+			newRow.data[i] = Int64Cell{data: intCell}
+		}
+		return newRow, nil
+	} else if reflect.TypeOf(record[0]) == reflect.TypeOf(float32(10.0)) {
+		for i, v := range record {
+			cell, err := strconv.ParseFloat(v, 64)
+			if err != nil {
+				panic("Error converting string to int.")
+			}
+			floatCell := float32(cell)
+			newRow.data[i] = Float32Cell{data: floatCell}
+		}
+		return newRow, nil
+	} else if reflect.TypeOf(record[0]) == reflect.TypeOf(float64(10.0)) {
 		for i, v := range record {
 			cell, err := strconv.ParseFloat(v, 64)
 			if err != nil {
@@ -35,7 +86,7 @@ func createRow(record []string) (Row, error) {
 		}
 		return newRow, nil
 	} else {
-		return Row{data: []Cell{}}, errors.New("The specified type is not known")
+		return Row{data: []Cell{}}, errors.New("the specified type is not known")
 	}
 }
 

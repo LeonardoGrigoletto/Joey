@@ -14,12 +14,12 @@ type Dataframe struct {
 	columns []Column
 }
 
-func (d *Dataframe) Column(name string) (Column, error) {
+func (d *Dataframe) Column(name string) Column {
 	columnIndex, err := d.getColumnIndex(name)
 	if err != nil {
-		return Column{}, err
+		panic("Column name does not exist.")
 	}
-	return d.columns[columnIndex], nil
+	return d.columns[columnIndex]
 }
 
 func (d *Dataframe) Convert(columnName string, to string) (Dataframe, error) {

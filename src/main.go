@@ -13,10 +13,10 @@ func main() {
 	dataframe.Convert("charge", "int")
 	dataframe.ShowTypes()
 
-	column, _ := dataframe.Column("charge")
+	column := dataframe.Column("charge")
 	fmt.Println(column.Sum())
 
-	index := column.FindFirst(int64(10))
+	index := column.FindFirst(int(10))
 	fmt.Println(index)
 
 	// dataframe.Sum("column2", "column4")
