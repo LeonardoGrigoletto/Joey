@@ -112,6 +112,12 @@ func NewFromCsv(path string) (Dataframe, error) {
 		columns[i] = col.New(len(records))
 	}
 
+	for i, _ := range header {
+		column := make([]string, len(records))
+		for j, _ := range records {
+			column[j] = records[j][i]
+		}
+	}
 	for i, record := range records {
 		row, err := createRow(record)
 		if err != nil {
@@ -119,8 +125,8 @@ func NewFromCsv(path string) (Dataframe, error) {
 		}
 		rows[i] = row
 
-		for j := range row.data {
-			columns[j].data[i] = &row.data[j]
+		for j := range record {
+			columns[j].data[i] = record[j]
 		}
 	}
 

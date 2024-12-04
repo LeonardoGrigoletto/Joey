@@ -5,29 +5,22 @@ import (
 	"reflect"
 )
 
-type Row struct {
+// type Row struct {
+// 	data []*Cell
+// }
+
+type Column struct {
 	data []Cell
 }
 
-type Column struct {
-	data       []*Cell
-	validTypes map[reflect.Type]bool
-}
-
 func (c *Column) New(size int) Column {
-	validTypes := map[reflect.Type]bool{
-		reflect.TypeOf("string"):   true, // string
-		reflect.TypeOf(float64(2)): true, // float64
-		reflect.TypeOf(int64(2)):   true, // int64
-	}
-	column := Column{data: make([]*Cell, size), validTypes: validTypes}
+	column := Column{data: make([]Cell, size)}
 	return column
 }
 
 func (c *Column) Sum() float64 {
 	sum := float64(0)
-	for _, cellPtr := range c.data {
-		cell := *cellPtr
+	for _, cell := range c.data {
 		cellNumberValue := cell.GetNumber()
 		sum += cellNumberValue
 	}
@@ -35,9 +28,8 @@ func (c *Column) Sum() float64 {
 }
 
 func (c *Column) checkType(item interface{}) error {
-	cell := *c.data[0]
 	typeOfItem := reflect.TypeOf(item)
-	typeOfCells := reflect.TypeOf(cell.GetRawData())
+	typeOfCells := reflect.TypeOf(c.data[0].GetRawData())
 	if typeOfItem != typeOfCells {
 		return errors.New("invalid specified type. Must be string, floatX or intX")
 	}
@@ -49,8 +41,7 @@ func (c *Column) FindFirst(item interface{}) int {
 	if err != nil {
 		return -1
 	}
-	for i, cellPtr := range c.data {
-		cell := *cellPtr
+	for i, cell := range c.data {
 		rawData := cell.GetRawData()
 		if rawData == item {
 			return i
