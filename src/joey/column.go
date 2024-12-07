@@ -5,10 +5,6 @@ import (
 	"reflect"
 )
 
-// type Row struct {
-// 	data []*Cell
-// }
-
 type Column struct {
 	name string
 	data []Cell
