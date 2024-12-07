@@ -10,11 +10,12 @@ import (
 // }
 
 type Column struct {
+	name string
 	data []Cell
 }
 
-func (c *Column) New(size int) Column {
-	column := Column{data: make([]Cell, size)}
+func (c *Column) New(size int, name string) Column {
+	column := Column{data: make([]Cell, size), name: name}
 	return column
 }
 
