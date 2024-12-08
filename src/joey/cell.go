@@ -11,4 +11,10 @@ type Cell interface {
 	Length() int
 	// This functions convert the Cell to another type, eg: StrCell, Int64Cell ...
 	Convert(to string) (Cell, error)
+	// This function returns the native type of a cell
+	GetNativeType() interface{}
+	// This function returns the artificial type of a cell, eg: StrCell, IntCell, Float32Cell...
+	GetType() interface{}
+	// This function adds a value to this cell. It won't do anything if the types are mismatched.
+	Add(cell Cell)
 }

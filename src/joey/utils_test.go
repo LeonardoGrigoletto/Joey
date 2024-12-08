@@ -44,7 +44,7 @@ func TestNewFromCsvShouldCreateANewDataframe(t *testing.T) {
 	}
 	// validate columns
 	for i, column := range dataframe.columns {
-		for j, cell := range column.data {
+		for j, cell := range column.Data {
 			if correctRecords[j][i] != cell.GetRawData() {
 				t.Fatalf("Record %s from CSV != %s from Dataframe", correctRecords[j][i], cell.GetRawData())
 			}

@@ -13,12 +13,16 @@ type Dataframe struct {
 	columns []Column
 }
 
-func (d *Dataframe) Column(name string) Column {
+func (d *Dataframe) Column(name string) *Column {
 	columnIndex := d.getColumnIndex(name)
 	if columnIndex < 0 {
-		return Column{}
+		return &Column{}
 	}
-	return d.columns[columnIndex]
+	return &d.columns[columnIndex]
+}
+
+func (d *Dataframe) Columns() *[]Column {
+	return &d.columns
 }
 
 func (d *Dataframe) Convert(columnName string, to string) (Dataframe, error) {
@@ -27,7 +31,7 @@ func (d *Dataframe) Convert(columnName string, to string) (Dataframe, error) {
 		return Dataframe{}, errors.New("Column Name %s does not exist." + columnName)
 	}
 
-	for i, cell := range d.columns[columnIndex].data {
+	for i, cell := range d.columns[columnIndex].Data {
 		if cell == nil {
 			return Dataframe{}, errors.New("nil cell pointer found")
 		}
@@ -37,7 +41,7 @@ func (d *Dataframe) Convert(columnName string, to string) (Dataframe, error) {
 			return Dataframe{}, err
 		}
 
-		d.columns[columnIndex].data[i] = convertedCell
+		d.columns[columnIndex].Data[i] = convertedCell
 	}
 	return Dataframe{
 		headers: d.headers,
@@ -62,7 +66,7 @@ func (d *Dataframe) printHeader(colWidths []int) {
 func (d *Dataframe) printRecords(colWidths []int, numberOfRecords int) {
 	for i := 0; i < numberOfRecords; i++ {
 		for j, column := range d.columns {
-			cell := column.data[i]
+			cell := column.Data[i]
 			fmt.Printf("| %-*s ", colWidths[j], cell.GetFormattedData())
 		}
 		fmt.Println("|")
@@ -70,12 +74,12 @@ func (d *Dataframe) printRecords(colWidths []int, numberOfRecords int) {
 }
 
 func (d *Dataframe) calculateNumberOfRecordsToPrint(size ...int) int {
-	numberOfRecordsToPrint := len(d.columns[0].data)
+	numberOfRecordsToPrint := len(d.columns[0].Data)
 	if len(size) > 0 {
 		numberOfRecordsToPrint = size[0]
 	}
-	if numberOfRecordsToPrint > len(d.columns[0].data) {
-		numberOfRecordsToPrint = len(d.columns[0].data)
+	if numberOfRecordsToPrint > len(d.columns[0].Data) {
+		numberOfRecordsToPrint = len(d.columns[0].Data)
 	}
 	return numberOfRecordsToPrint
 }
@@ -88,8 +92,8 @@ func (d *Dataframe) calculateColWidthsToPrint(numberOfRecordsToPrint int) []int 
 
 	for i, column := range d.columns {
 		for k := 0; k < numberOfRecordsToPrint; k++ {
-			if column.data[k].Length() > colWidths[i] {
-				colWidths[i] = column.data[k].Length()
+			if column.Data[k].Length() > colWidths[i] {
+				colWidths[i] = column.Data[k].Length()
 			}
 		}
 	}
@@ -112,7 +116,7 @@ func (d *Dataframe) Show(size ...int) {
 	fmt.Println(separator)
 
 	// FOOTER
-	fmt.Printf("Showing %d/%d records\n", numberOfRecordsToPrint, len(d.columns[0].data))
+	fmt.Printf("Showing %d/%d records\n", numberOfRecordsToPrint, len(d.columns[0].Data))
 	fmt.Println("")
 }
 
@@ -122,7 +126,7 @@ func (d *Dataframe) ShowTypes() {
 	bold := "\033[1m"
 	fmt.Println("+--- Fields Types ---+")
 	for i, column := range d.columns {
-		cell := column.data[0]
+		cell := column.Data[0]
 		fmt.Printf(green+"%s"+reset+" --- "+bold+"%s\n"+reset, d.headers[i], reflect.TypeOf(cell))
 
 	}

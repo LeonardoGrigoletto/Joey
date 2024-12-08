@@ -2,45 +2,63 @@ package joey
 
 import (
 	"errors"
+	"reflect"
 	"strconv"
 	"strings"
 )
 
 type Float64Cell struct {
-	data float64
+	Data float64
+}
+
+func (f *Float64Cell) Add(cell Cell) {
+	data := cell.GetRawData()
+	value, ok := data.(float64)
+	if !ok {
+		panic("It is not possible to sum columns of different types")
+	}
+	f.Data += value
+}
+
+func (f Float64Cell) GetType() interface{} {
+	return reflect.TypeOf(Float64Cell{})
+}
+
+func (f Float64Cell) GetNativeType() interface{} {
+	return reflect.TypeOf(f.Data)
 }
 
 func (f Float64Cell) GetFormattedData() string {
-	return strconv.FormatFloat(f.data, 'f', 2, 64)
+	return strconv.FormatFloat(f.Data, 'f', 2, 64)
 }
 
 func (f Float64Cell) Length() int {
-	return len(strconv.FormatFloat(f.data, 'f', 2, 64))
+	return len(strconv.FormatFloat(f.Data, 'f', 2, 64))
 }
 
 func (f Float64Cell) Convert(to string) (Cell, error) {
 	if strings.EqualFold(to, "str") {
-		convertedData := strconv.FormatFloat(f.data, 'f', 2, 64)
-		return StrCell{data: convertedData}, nil
+		convertedData := strconv.FormatFloat(f.Data, 'f', 2, 64)
+		return &StrCell{Data: convertedData}, nil
 	}
 	if strings.EqualFold(to, "int32") {
-		convertedData := int32(f.data)
-		return Int32Cell{data: convertedData}, nil
+		convertedData := int32(f.Data)
+		return &Int32Cell{Data: convertedData}, nil
 	}
 	if strings.EqualFold(to, "int64") {
-		convertedData := int64(f.data)
-		return Int64Cell{data: convertedData}, nil
+		convertedData := int64(f.Data)
+		return &Int64Cell{Data: convertedData}, nil
 	}
 	if strings.EqualFold(to, "float64") {
-		return f, nil
+		return &f, nil
 	}
 	return nil, errors.New("Cannot convert to type: " + to)
 }
 
 func (f Float64Cell) GetRawData() any {
-	return f.data
+	return f.Data
 }
 
 func (f Float64Cell) GetNumber() float64 {
-	return f.data
+	return f.Data
 }

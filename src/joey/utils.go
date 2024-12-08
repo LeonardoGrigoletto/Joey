@@ -7,8 +7,8 @@ import (
 )
 
 func createDefaultCell(cell string) Cell {
-	strCell := StrCell{data: cell}
-	return strCell
+	strCell := StrCell{Data: cell}
+	return &strCell
 }
 
 func NewFromCsv(path string) (Dataframe, error) {
@@ -31,7 +31,7 @@ func NewFromCsv(path string) (Dataframe, error) {
 		var col Column
 		columns[i] = col.New(len(records), header[i])
 		for j := range records {
-			columns[i].data[j] = createDefaultCell(records[j][i])
+			columns[i].Data[j] = createDefaultCell(records[j][i])
 		}
 	}
 	dataframe := Dataframe{
