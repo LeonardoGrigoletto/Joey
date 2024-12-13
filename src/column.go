@@ -11,6 +11,14 @@ type Column struct {
 	Data []cells.Cell
 }
 
+func Repeat(size int, value float64, name string) *Column {
+	column := &Column{Data: make([]cells.Cell, size), name: name}
+	for i := range column.Data {
+		column.Data[i] = &cells.Float64Cell{Data: value}
+	}
+	return column
+}
+
 func (c *Column) New(size int, name string) Column {
 	column := Column{Data: make([]cells.Cell, size), name: name}
 	return column
@@ -79,13 +87,13 @@ func (c *Column) Add(otherColumn Column) Column {
 	return *c
 }
 
-func (c *Column) Convert(to string) error {
+func (c *Column) Convert(to string) Column {
 	for i, cell := range c.Data {
 		convertedCell, err := cell.Convert(to)
 		if err != nil {
-			return err
+			panic(err)
 		}
 		c.Data[i] = convertedCell
 	}
-	return nil
+	return *c
 }

@@ -1,9 +1,23 @@
 package main
 
-import "joey"
+import (
+	"joey"
+	"path/filepath"
+	"runtime"
+)
+
+func setup() string {
+	_, file, _, ok := runtime.Caller(0)
+	if !ok {
+		panic("could not get file path.")
+	}
+	dir := filepath.Dir(file)
+	testCsvFilePath := filepath.Join(dir, "example_sum_columns.csv")
+	return testCsvFilePath
+}
 
 func main() {
-	dataframe, err := joey.NewFromCsv("./example_sum_columns.csv")
+	dataframe, err := joey.NewFromCsv(setup())
 	if err != nil {
 		panic(err)
 	}
@@ -17,11 +31,7 @@ func main() {
 	dataframe.Show()
 
 	// Adding a new column to another
-	data := make([]joey.Cell, 26)
-	for i := range data {
-		data[i] = &joey.IntCell{Data: 50}
-	}
-	newColumn := joey.Column{Data: data}
+	newColumn := joey.Repeat(26, float64(50.0), "newColumn").Convert("int")
 	dataframe.Column("charge").Add(newColumn)
 	dataframe.Show()
 

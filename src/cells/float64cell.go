@@ -49,8 +49,24 @@ func (f Float64Cell) Convert(to string) (Cell, error) {
 		convertedData := int64(f.Data)
 		return &Int64Cell{Data: convertedData}, nil
 	}
+	if strings.EqualFold(to, "int16") {
+		convertedData := int16(f.Data)
+		return &Int16Cell{Data: convertedData}, nil
+	}
+	if strings.EqualFold(to, "int8") {
+		convertedData := int8(f.Data)
+		return &Int8Cell{Data: convertedData}, nil
+	}
+	if strings.EqualFold(to, "int") {
+		convertedData := int(f.Data)
+		return &IntCell{Data: convertedData}, nil
+	}
 	if strings.EqualFold(to, "float64") {
 		return &f, nil
+	}
+	if strings.EqualFold(to, "float32") {
+		convertedData := float32(f.Data)
+		return &Float32Cell{Data: convertedData}, nil
 	}
 	return nil, errors.New("Cannot convert to type: " + to)
 }
