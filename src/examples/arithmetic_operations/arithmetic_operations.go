@@ -35,4 +35,14 @@ func main() {
 	dataframe.Column("charge").Add(newColumn)
 	dataframe.Show()
 
+	// Subtracting a new column from another
+	newColumn = joey.Repeat(26, float64(10000), "newColumn").Convert("int")
+	dataframe.Column("charge").Subtract(newColumn)
+	dataframe.Show()
+
+	// Multiplying a new column with another
+	newColumn = joey.Repeat(26, float64(10000), "newColumn").Convert("int")
+	dataframe.Column("charge").Multiply(newColumn)
+	dataframe.Show()
+
 }

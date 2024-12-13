@@ -20,6 +20,10 @@ func (s *StrCell) Add(cell Cell) {
 	s.Data += value
 }
 
+func (s *StrCell) Multiply(cell Cell) {
+	panic("It is not possible to multiply strings.")
+}
+
 func (s *StrCell) Subtract(cell Cell) {
 	panic("It is not possible to subtract strings.")
 }

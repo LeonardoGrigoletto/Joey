@@ -19,4 +19,6 @@ type Cell interface {
 	Add(cell Cell)
 	// This function subtract a value from this cell. It will panic if the types are mismatched.
 	Subtract(cell Cell)
+	// This function multiply a value with this cell. It will panic if the types are mismatched.
+	Multiply(cell Cell)
 }

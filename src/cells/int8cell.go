@@ -20,6 +20,15 @@ func (i *Int8Cell) Add(cell Cell) {
 	i.Data += value
 }
 
+func (i *Int8Cell) Multiply(cell Cell) {
+	data := cell.GetRawData()
+	value, ok := data.(int8)
+	if !ok {
+		panic("It is not possible to multiply columns of different types")
+	}
+	i.Data *= value
+}
+
 func (i *Int8Cell) Subtract(cell Cell) {
 	data := cell.GetRawData()
 	value, ok := data.(int8)
