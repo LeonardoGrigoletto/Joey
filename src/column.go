@@ -74,13 +74,17 @@ func (c *Column) hasEqualLengths(otherColumn Column) bool {
 	return len(c.Data) == len(otherColumn.Data)
 }
 
-func (c *Column) Add(otherColumn Column) Column {
+func (c *Column) validateToPerformArithmeticOperation(otherColumn Column) {
 	if !c.hasEqualTypes(otherColumn) {
 		panic("It is not possible to sum columns of different types")
 	}
 	if !c.hasEqualLengths(otherColumn) {
 		panic("Column Lengths mismatched.")
 	}
+}
+
+func (c *Column) Add(otherColumn Column) Column {
+	c.validateToPerformArithmeticOperation(otherColumn)
 	for i, cell := range c.Data {
 		cell.Add(otherColumn.Data[i])
 	}
@@ -88,12 +92,7 @@ func (c *Column) Add(otherColumn Column) Column {
 }
 
 func (c *Column) Subtract(otherColumn Column) Column {
-	if !c.hasEqualTypes(otherColumn) {
-		panic("It is not possible to subtract columns of different types")
-	}
-	if !c.hasEqualLengths(otherColumn) {
-		panic("Column Lengths mismatched.")
-	}
+	c.validateToPerformArithmeticOperation(otherColumn)
 	for i, cell := range c.Data {
 		cell.Subtract(otherColumn.Data[i])
 	}
@@ -101,12 +100,7 @@ func (c *Column) Subtract(otherColumn Column) Column {
 }
 
 func (c *Column) Multiply(otherColumn Column) Column {
-	if !c.hasEqualTypes(otherColumn) {
-		panic("It is not possible to multiply columns of different types")
-	}
-	if !c.hasEqualLengths(otherColumn) {
-		panic("Column Lengths mismatched.")
-	}
+	c.validateToPerformArithmeticOperation(otherColumn)
 	for i, cell := range c.Data {
 		cell.Multiply(otherColumn.Data[i])
 	}
