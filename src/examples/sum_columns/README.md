@@ -1,13 +1,13 @@
 
 # Joey Example - Dataframe Manipulation
 
-This repository contains a simple example of how to use the `joey` library to work with DataFrames in Go. The example demonstrates how to load data from a CSV file, perform type conversion operations, and execute operations such as adding columns to a DataFrame.
+This repository contains a simple example of how to use the `joey` library to work with DataFrames in Go. The example demonstrates how to load data from a CSV file, perform type conversion operations, and execute arithmetic operations to a DataFrame.
 
 
 ### Code Objective
 
 1. **Load a CSV file**:
-   The code starts by loading a CSV file (`example_sum_columns.csv`) from the same directory as the Go file. This file contains data that will be read and loaded into a DataFrame.
+   The code starts by loading a CSV file (`example_arithmetic.csv`) from the same directory as the Go file. This file contains data that will be read and loaded into a DataFrame.
 
 2. **Convert Data**:
    The example converts all values in the columns of the DataFrame to integers.
@@ -72,7 +72,7 @@ dataframe.Show()
 
 ## Example CSV File
 
-The `example_sum_columns.csv` file should contain structured data with at least two columns (`charge` and `walltime`) for the example to work correctly. The CSV format may look like this:
+The `example_arithmetic.csv` file should contain structured data with at least two columns (`charge` and `walltime`) for the example to work correctly. The CSV format may look like this:
 
 ```
 charge,walltime

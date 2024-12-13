@@ -12,7 +12,7 @@ func setup() string {
 		panic("could not get file path.")
 	}
 	dir := filepath.Dir(file)
-	testCsvFilePath := filepath.Join(dir, "example_sum_columns.csv")
+	testCsvFilePath := filepath.Join(dir, "example_arithmetic.csv")
 	return testCsvFilePath
 }
 
