@@ -20,6 +20,15 @@ func (f *Float32Cell) Add(cell Cell) {
 	f.Data += value
 }
 
+func (f *Float32Cell) Subtract(cell Cell) {
+	data := cell.GetRawData()
+	value, ok := data.(float32)
+	if !ok {
+		panic("It is not possible to sum columns of different types")
+	}
+	f.Data -= value
+}
+
 func (f Float32Cell) GetType() interface{} {
 	return reflect.TypeOf(Float32Cell{})
 }

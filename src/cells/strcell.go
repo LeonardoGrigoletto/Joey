@@ -20,6 +20,10 @@ func (s *StrCell) Add(cell Cell) {
 	s.Data += value
 }
 
+func (s *StrCell) Subtract(cell Cell) {
+	panic("It is not possible to subtract strings.")
+}
+
 func (s StrCell) GetType() interface{} {
 	return reflect.TypeOf(StrCell{})
 }

@@ -15,6 +15,8 @@ type Cell interface {
 	GetNativeType() interface{}
 	// This function returns the artificial type of a cell, eg: StrCell, IntCell, Float32Cell...
 	GetType() interface{}
-	// This function adds a value to this cell. It won't do anything if the types are mismatched.
+	// This function adds a value to this cell. It will panic if the types are mismatched.
 	Add(cell Cell)
+	// This function subtract a value from this cell. It will panic if the types are mismatched.
+	Subtract(cell Cell)
 }

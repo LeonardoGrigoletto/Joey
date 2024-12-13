@@ -20,6 +20,15 @@ func (i *Int32Cell) Add(cell Cell) {
 	i.Data += value
 }
 
+func (i *Int32Cell) Subtract(cell Cell) {
+	data := cell.GetRawData()
+	value, ok := data.(int32)
+	if !ok {
+		panic("It is not possible to subtract columns of different types")
+	}
+	i.Data -= value
+}
+
 func (i Int32Cell) GetType() interface{} {
 	return reflect.TypeOf(Int32Cell{})
 }

@@ -87,6 +87,19 @@ func (c *Column) Add(otherColumn Column) Column {
 	return *c
 }
 
+func (c *Column) Subtract(otherColumn Column) Column {
+	if !c.hasEqualTypes(otherColumn) {
+		panic("It is not possible to subtract columns of different types")
+	}
+	if !c.hasEqualLengths(otherColumn) {
+		panic("Column Lengths mismatched.")
+	}
+	for i, cell := range c.Data {
+		cell.Subtract(otherColumn.Data[i])
+	}
+	return *c
+}
+
 func (c *Column) Convert(to string) Column {
 	for i, cell := range c.Data {
 		convertedCell, err := cell.Convert(to)

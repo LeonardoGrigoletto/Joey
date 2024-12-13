@@ -40,6 +40,40 @@ func TestColumnAdd(t *testing.T) {
 	}
 }
 
+func TestColumnSubtract(t *testing.T) {
+	oneColumn := Column{
+		Data: []cells.Cell{
+			&cells.IntCell{Data: 50},
+			&cells.IntCell{Data: 50},
+			&cells.IntCell{Data: 50},
+			&cells.IntCell{Data: 50},
+			&cells.IntCell{Data: 50},
+		},
+	}
+
+	otherColumn := Column{
+		Data: []cells.Cell{
+			&cells.IntCell{Data: 30},
+			&cells.IntCell{Data: 30},
+			&cells.IntCell{Data: 30},
+			&cells.IntCell{Data: 30},
+			&cells.IntCell{Data: 30},
+		},
+	}
+
+	resultColumn := oneColumn.Subtract(otherColumn)
+	for _, cell := range resultColumn.Data {
+		if cell.GetRawData() != 20 {
+			t.Fatalf("Column Add did not work properly.")
+		}
+	}
+	for _, cell := range oneColumn.Data {
+		if cell.GetRawData() != 20 {
+			t.Fatalf("Column Add did not work properly.")
+		}
+	}
+}
+
 func TestColumnAddMismatchedLengths(t *testing.T) {
 	defer func() {
 		if r := recover(); r == nil {
