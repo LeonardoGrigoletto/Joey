@@ -1,12 +1,12 @@
-package joey
+package cells
 
 import (
 	"testing"
 )
 
-func TestAddFloat64Cell(t *testing.T) {
-	oneCell := Float64Cell{Data: 50}
-	otherCell := Float64Cell{Data: 30}
+func TestAddFloat32Cell(t *testing.T) {
+	oneCell := Float32Cell{Data: 50}
+	otherCell := Float32Cell{Data: 30}
 	oneCell.Add(&otherCell)
 
 	if oneCell.Data != 80 {
@@ -14,13 +14,13 @@ func TestAddFloat64Cell(t *testing.T) {
 	}
 }
 
-func TestAddMismatchedTypeFloat64Cell(t *testing.T) {
+func TestAddMismatchedTypeFloat32Cell(t *testing.T) {
 	defer func() {
 		if r := recover(); r == nil {
 			t.Fatalf("oneCell.Add(otherCell) should be in panic.")
 		}
 	}()
-	oneCell := Float64Cell{Data: 50}
+	oneCell := Float32Cell{Data: 50}
 	otherCell := Int8Cell{Data: 30}
 	oneCell.Add(&otherCell)
 }

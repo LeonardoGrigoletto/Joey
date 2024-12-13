@@ -1,4 +1,4 @@
-package joey
+package cells
 
 type Cell interface {
 	// This function returns cell value in string format.

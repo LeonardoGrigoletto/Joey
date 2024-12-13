@@ -2,16 +2,17 @@ package joey
 
 import (
 	"errors"
+	"joey/cells"
 	"reflect"
 )
 
 type Column struct {
 	name string
-	Data []Cell
+	Data []cells.Cell
 }
 
 func (c *Column) New(size int, name string) Column {
-	column := Column{Data: make([]Cell, size), name: name}
+	column := Column{Data: make([]cells.Cell, size), name: name}
 	return column
 }
 

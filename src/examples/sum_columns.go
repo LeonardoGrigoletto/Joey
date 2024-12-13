@@ -1,6 +1,6 @@
 package main
 
-import "joey/joey"
+import "joey"
 
 func main() {
 	dataframe, err := joey.NewFromCsv("./example_sum_columns.csv")

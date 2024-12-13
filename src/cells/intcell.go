@@ -1,4 +1,4 @@
-package joey
+package cells
 
 import (
 	"errors"
@@ -7,43 +7,43 @@ import (
 	"strings"
 )
 
-type Int64Cell struct {
-	Data int64
+type IntCell struct {
+	Data int
 }
 
-func (i *Int64Cell) Add(cell Cell) {
+func (i *IntCell) Add(cell Cell) {
 	data := cell.GetRawData()
-	value, ok := data.(int64)
+	value, ok := data.(int)
 	if !ok {
 		panic("It is not possible to sum columns of different types")
 	}
 	i.Data += value
 }
 
-func (i Int64Cell) GetType() interface{} {
-	return reflect.TypeOf(Int64Cell{})
+// GetType implements Cell.
+func (i IntCell) GetType() interface{} {
+	return reflect.TypeOf(IntCell{})
 }
 
-func (i Int64Cell) GetNativeType() interface{} {
+func (i IntCell) GetNativeType() interface{} {
 	return reflect.TypeOf(i.Data)
 }
 
-func (i Int64Cell) GetFormattedData() string {
-	return strconv.FormatInt(i.Data, 10)
+func (i IntCell) GetFormattedData() string {
+	return strconv.FormatInt(int64(i.Data), 10)
 }
 
-func (i Int64Cell) Length() int {
+func (i IntCell) Length() int {
 	return len(strconv.Itoa(int(i.Data)))
 }
 
-func (i Int64Cell) Convert(to string) (Cell, error) {
+func (i IntCell) Convert(to string) (Cell, error) {
 	if strings.EqualFold(to, "str") {
 		convertedData := strconv.FormatInt(int64(i.Data), 10)
 		return &StrCell{Data: convertedData}, nil
 	}
 	if strings.EqualFold(to, "int") {
-		convertedData := int(i.Data)
-		return &IntCell{Data: convertedData}, nil
+		return &i, nil
 	}
 	if strings.EqualFold(to, "int8") {
 		convertedData := int8(i.Data)
@@ -58,22 +58,24 @@ func (i Int64Cell) Convert(to string) (Cell, error) {
 		return &Int32Cell{Data: convertedData}, nil
 	}
 	if strings.EqualFold(to, "int64") {
-		return &i, nil
+		convertedData := int64(i.Data)
+		return &Int64Cell{Data: convertedData}, nil
 	}
 	if strings.EqualFold(to, "float32") {
 		convertedData := float32(i.Data)
 		return &Float32Cell{Data: convertedData}, nil
 	}
 	if strings.EqualFold(to, "float64") {
-		return &Float64Cell{Data: float64(i.Data)}, nil
+		convertedData := float64(i.Data)
+		return &Float64Cell{Data: convertedData}, nil
 	}
 	return nil, errors.New("Cannot convert to type: " + to)
 }
 
-func (i Int64Cell) GetRawData() any {
+func (i IntCell) GetRawData() any {
 	return i.Data
 }
 
-func (i Int64Cell) GetNumber() float64 {
+func (i IntCell) GetNumber() float64 {
 	return float64(i.Data)
 }

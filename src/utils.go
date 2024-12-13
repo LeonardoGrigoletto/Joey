@@ -3,11 +3,12 @@ package joey
 import (
 	"encoding/csv"
 	"fmt"
+	"joey/cells"
 	"os"
 )
 
-func createDefaultCell(cell string) Cell {
-	strCell := StrCell{Data: cell}
+func createDefaultCell(cell string) cells.Cell {
+	strCell := cells.StrCell{Data: cell}
 	return &strCell
 }
 

@@ -1,4 +1,4 @@
-package joey
+package cells
 
 import (
 	"errors"
@@ -7,50 +7,46 @@ import (
 	"strings"
 )
 
-type Int16Cell struct {
-	Data int16
+type Int8Cell struct {
+	Data int8
 }
 
-func (i *Int16Cell) Add(cell Cell) {
+func (i *Int8Cell) Add(cell Cell) {
 	data := cell.GetRawData()
-	value, ok := data.(int16)
+	value, ok := data.(int8)
 	if !ok {
 		panic("It is not possible to sum columns of different types")
 	}
 	i.Data += value
 }
 
-func (i Int16Cell) GetType() interface{} {
-	return reflect.TypeOf(Int16Cell{})
+func (i Int8Cell) GetType() interface{} {
+	return reflect.TypeOf(Int8Cell{})
 }
 
-func (i Int16Cell) GetNativeType() interface{} {
+func (i Int8Cell) GetNativeType() interface{} {
 	return reflect.TypeOf(i.Data)
 }
 
-func (i Int16Cell) GetFormattedData() string {
+func (i Int8Cell) GetFormattedData() string {
 	return strconv.FormatInt(int64(i.Data), 10)
 }
 
-func (i Int16Cell) Length() int {
+func (i Int8Cell) Length() int {
 	return len(strconv.Itoa(int(i.Data)))
 }
 
-func (i Int16Cell) Convert(to string) (Cell, error) {
+func (i Int8Cell) Convert(to string) (Cell, error) {
 	if strings.EqualFold(to, "str") {
 		convertedData := strconv.FormatInt(int64(i.Data), 10)
 		return &StrCell{Data: convertedData}, nil
 	}
-	if strings.EqualFold(to, "int") {
-		convertedData := int(i.Data)
-		return &IntCell{Data: convertedData}, nil
-	}
 	if strings.EqualFold(to, "int8") {
-		convertedData := int8(i.Data)
-		return &Int8Cell{Data: convertedData}, nil
+		return &i, nil
 	}
 	if strings.EqualFold(to, "int16") {
-		return &i, nil
+		convertedData := int16(i.Data)
+		return &Int16Cell{Data: convertedData}, nil
 	}
 	if strings.EqualFold(to, "int32") {
 		convertedData := int32(i.Data)
@@ -70,10 +66,10 @@ func (i Int16Cell) Convert(to string) (Cell, error) {
 	return nil, errors.New("Cannot convert to type: " + to)
 }
 
-func (i Int16Cell) GetRawData() any {
+func (i Int8Cell) GetRawData() any {
 	return i.Data
 }
 
-func (i Int16Cell) GetNumber() float64 {
+func (i Int8Cell) GetNumber() float64 {
 	return float64(i.Data)
 }

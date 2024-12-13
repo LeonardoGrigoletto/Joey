@@ -1,28 +1,29 @@
 package joey
 
 import (
+	"joey/cells"
 	"reflect"
 	"testing"
 )
 
 func TestColumnAdd(t *testing.T) {
 	oneColumn := Column{
-		Data: []Cell{
-			&IntCell{Data: 50},
-			&IntCell{Data: 50},
-			&IntCell{Data: 50},
-			&IntCell{Data: 50},
-			&IntCell{Data: 50},
+		Data: []cells.Cell{
+			&cells.IntCell{Data: 50},
+			&cells.IntCell{Data: 50},
+			&cells.IntCell{Data: 50},
+			&cells.IntCell{Data: 50},
+			&cells.IntCell{Data: 50},
 		},
 	}
 
 	otherColumn := Column{
-		Data: []Cell{
-			&IntCell{Data: 30},
-			&IntCell{Data: 30},
-			&IntCell{Data: 30},
-			&IntCell{Data: 30},
-			&IntCell{Data: 30},
+		Data: []cells.Cell{
+			&cells.IntCell{Data: 30},
+			&cells.IntCell{Data: 30},
+			&cells.IntCell{Data: 30},
+			&cells.IntCell{Data: 30},
+			&cells.IntCell{Data: 30},
 		},
 	}
 
@@ -46,21 +47,21 @@ func TestColumnAddMismatchedLengths(t *testing.T) {
 		}
 	}()
 	oneColumn := Column{
-		Data: []Cell{
-			&IntCell{Data: 50},
-			&IntCell{Data: 50},
-			&IntCell{Data: 50},
-			&IntCell{Data: 50},
+		Data: []cells.Cell{
+			&cells.IntCell{Data: 50},
+			&cells.IntCell{Data: 50},
+			&cells.IntCell{Data: 50},
+			&cells.IntCell{Data: 50},
 		},
 	}
 
 	otherColumn := Column{
-		Data: []Cell{
-			&IntCell{Data: 30},
-			&IntCell{Data: 30},
-			&IntCell{Data: 30},
-			&IntCell{Data: 30},
-			&IntCell{Data: 30},
+		Data: []cells.Cell{
+			&cells.IntCell{Data: 30},
+			&cells.IntCell{Data: 30},
+			&cells.IntCell{Data: 30},
+			&cells.IntCell{Data: 30},
+			&cells.IntCell{Data: 30},
 		},
 	}
 	oneColumn.Add(otherColumn)
@@ -68,15 +69,15 @@ func TestColumnAddMismatchedLengths(t *testing.T) {
 
 func TestColumnConversion(t *testing.T) {
 	oneColumn := Column{
-		Data: []Cell{
-			&IntCell{Data: 50},
-			&IntCell{Data: 50},
-			&IntCell{Data: 50},
-			&IntCell{Data: 50},
+		Data: []cells.Cell{
+			&cells.IntCell{Data: 50},
+			&cells.IntCell{Data: 50},
+			&cells.IntCell{Data: 50},
+			&cells.IntCell{Data: 50},
 		},
 	}
 	oneColumn.Convert("str")
-	if oneColumn.GetType() != reflect.TypeOf(StrCell{}) {
+	if oneColumn.GetType() != reflect.TypeOf(cells.StrCell{}) {
 		t.Fatalf("Column conversion to StrCell did not work properly.")
 	}
 	if oneColumn.GetNativeType() != reflect.TypeOf("StrCell{}") {

@@ -4,10 +4,20 @@ import (
 	"encoding/csv"
 	"errors"
 	"os"
+	"path/filepath"
+	"runtime"
 	"testing"
 )
 
-var filePath string = "../test.csv"
+func setup() string {
+	_, file, _, ok := runtime.Caller(0)
+	if !ok {
+		panic("could not get file path.")
+	}
+	dir := filepath.Dir(file)
+	testCsvFilePath := filepath.Join(dir, "test.csv")
+	return testCsvFilePath
+}
 
 func ReadCsv(path string) ([][]string, error) {
 	f, err := os.Open(path)
@@ -23,6 +33,7 @@ func ReadCsv(path string) ([][]string, error) {
 }
 
 func TestNewFromCsvShouldCreateANewDataframe(t *testing.T) {
+	filePath := setup()
 	records, err := ReadCsv(filePath)
 	if err != nil {
 		t.Fatal(err)

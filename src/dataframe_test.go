@@ -1,11 +1,14 @@
 package joey
 
 import (
+	"joey/cells"
 	"reflect"
 	"testing"
 )
 
 func TestColumnShouldGetColumn(t *testing.T) {
+	filePath := setup()
+
 	dataframe, err := NewFromCsv(filePath)
 	if err != nil {
 		t.Fatalf("%s", err)
@@ -18,6 +21,8 @@ func TestColumnShouldGetColumn(t *testing.T) {
 }
 
 func TestColumnNotExist(t *testing.T) {
+	filePath := setup()
+
 	dataframe, err := NewFromCsv(filePath)
 	if err != nil {
 		t.Fatalf("%s", err)
@@ -30,6 +35,8 @@ func TestColumnNotExist(t *testing.T) {
 }
 
 func TestConvertShouldConvertColumnToString(t *testing.T) {
+	filePath := setup()
+
 	dataframe, err := NewFromCsv(filePath)
 	if err != nil {
 		t.Fatalf("%s", err)
@@ -38,7 +45,7 @@ func TestConvertShouldConvertColumnToString(t *testing.T) {
 
 	// Testing conversion to String Cell
 	dataframe, err = dataframe.Convert(columnNameToTest, "str")
-	cellType := reflect.TypeOf(&StrCell{})
+	cellType := reflect.TypeOf(&cells.StrCell{})
 	convertedColumnType := reflect.TypeOf(dataframe.Column(columnNameToTest).Data[0])
 	isSameType := convertedColumnType == cellType
 	if err != nil {
@@ -50,6 +57,8 @@ func TestConvertShouldConvertColumnToString(t *testing.T) {
 }
 
 func TestConvertShouldConvertColumnToInt8(t *testing.T) {
+	filePath := setup()
+
 	dataframe, err := NewFromCsv(filePath)
 	if err != nil {
 		t.Fatalf("%s", err)
@@ -58,7 +67,7 @@ func TestConvertShouldConvertColumnToInt8(t *testing.T) {
 
 	// Testing conversion to Int8 Cell
 	dataframe, err = dataframe.Convert(columnNameToTest, "int8")
-	cellType := reflect.TypeOf(&Int8Cell{})
+	cellType := reflect.TypeOf(&cells.Int8Cell{})
 	convertedColumnType := reflect.TypeOf(dataframe.Column(columnNameToTest).Data[0])
 	isSameType := convertedColumnType == cellType
 	if err != nil {
@@ -70,6 +79,8 @@ func TestConvertShouldConvertColumnToInt8(t *testing.T) {
 }
 
 func TestConvertShouldConvertColumnToInt16(t *testing.T) {
+	filePath := setup()
+
 	dataframe, err := NewFromCsv(filePath)
 	if err != nil {
 		t.Fatalf("%s", err)
@@ -78,7 +89,7 @@ func TestConvertShouldConvertColumnToInt16(t *testing.T) {
 
 	// Testing conversion to Int16Cell
 	dataframe, err = dataframe.Convert(columnNameToTest, "int16")
-	cellType := reflect.TypeOf(&Int16Cell{})
+	cellType := reflect.TypeOf(&cells.Int16Cell{})
 	convertedColumnType := reflect.TypeOf(dataframe.Column(columnNameToTest).Data[0])
 	isSameType := convertedColumnType == cellType
 	if err != nil {
@@ -90,6 +101,8 @@ func TestConvertShouldConvertColumnToInt16(t *testing.T) {
 }
 
 func TestConvertShouldConvertColumnToInt32(t *testing.T) {
+	filePath := setup()
+
 	dataframe, err := NewFromCsv(filePath)
 	if err != nil {
 		t.Fatalf("%s", err)
@@ -98,7 +111,7 @@ func TestConvertShouldConvertColumnToInt32(t *testing.T) {
 
 	// Testing conversion to Int32Cell
 	dataframe, err = dataframe.Convert(columnNameToTest, "int32")
-	cellType := reflect.TypeOf(&Int32Cell{})
+	cellType := reflect.TypeOf(&cells.Int32Cell{})
 	convertedColumnType := reflect.TypeOf(dataframe.Column(columnNameToTest).Data[0])
 	isSameType := convertedColumnType == cellType
 	if err != nil {
@@ -110,6 +123,8 @@ func TestConvertShouldConvertColumnToInt32(t *testing.T) {
 }
 
 func TestConvertShouldConvertColumnToInt64(t *testing.T) {
+	filePath := setup()
+
 	dataframe, err := NewFromCsv(filePath)
 	if err != nil {
 		t.Fatalf("%s", err)
@@ -118,7 +133,7 @@ func TestConvertShouldConvertColumnToInt64(t *testing.T) {
 
 	// Testing conversion to Int64Cell
 	dataframe, err = dataframe.Convert(columnNameToTest, "int64")
-	cellType := reflect.TypeOf(&Int64Cell{})
+	cellType := reflect.TypeOf(&cells.Int64Cell{})
 	convertedColumnType := reflect.TypeOf(dataframe.Column(columnNameToTest).Data[0])
 	isSameType := convertedColumnType == cellType
 	if err != nil {
@@ -130,6 +145,8 @@ func TestConvertShouldConvertColumnToInt64(t *testing.T) {
 }
 
 func TestConvertShouldConvertColumnToInt(t *testing.T) {
+	filePath := setup()
+
 	dataframe, err := NewFromCsv(filePath)
 	if err != nil {
 		t.Fatalf("%s", err)
@@ -138,7 +155,7 @@ func TestConvertShouldConvertColumnToInt(t *testing.T) {
 
 	// Testing conversion to IntCell
 	dataframe, err = dataframe.Convert(columnNameToTest, "int")
-	cellType := reflect.TypeOf(&IntCell{})
+	cellType := reflect.TypeOf(&cells.IntCell{})
 	convertedColumnType := reflect.TypeOf(dataframe.Column(columnNameToTest).Data[0])
 	isSameType := convertedColumnType == cellType
 	if err != nil {
@@ -150,6 +167,8 @@ func TestConvertShouldConvertColumnToInt(t *testing.T) {
 }
 
 func TestConvertShouldConvertColumnToFloat32(t *testing.T) {
+	filePath := setup()
+
 	dataframe, err := NewFromCsv(filePath)
 	if err != nil {
 		t.Fatalf("%s", err)
@@ -158,7 +177,7 @@ func TestConvertShouldConvertColumnToFloat32(t *testing.T) {
 
 	// Testing conversion to Float32Cell
 	dataframe, err = dataframe.Convert(columnNameToTest, "float32")
-	cellType := reflect.TypeOf(&Float32Cell{})
+	cellType := reflect.TypeOf(&cells.Float32Cell{})
 	convertedColumnType := reflect.TypeOf(dataframe.Column(columnNameToTest).Data[0])
 	isSameType := convertedColumnType == cellType
 	if err != nil {
@@ -170,6 +189,8 @@ func TestConvertShouldConvertColumnToFloat32(t *testing.T) {
 }
 
 func TestConvertShouldConvertColumnToFloat64(t *testing.T) {
+	filePath := setup()
+
 	dataframe, err := NewFromCsv(filePath)
 	if err != nil {
 		t.Fatalf("%s", err)
@@ -178,7 +199,7 @@ func TestConvertShouldConvertColumnToFloat64(t *testing.T) {
 
 	// Testing conversion to Float64Cell
 	dataframe, err = dataframe.Convert(columnNameToTest, "float64")
-	cellType := reflect.TypeOf(&Float64Cell{})
+	cellType := reflect.TypeOf(&cells.Float64Cell{})
 	convertedColumnType := reflect.TypeOf(dataframe.Column(columnNameToTest).Data[0])
 	isSameType := convertedColumnType == cellType
 	if err != nil {
@@ -190,6 +211,8 @@ func TestConvertShouldConvertColumnToFloat64(t *testing.T) {
 }
 
 func TestCreateSeparator(t *testing.T) {
+	filePath := setup()
+
 	dataframe, err := NewFromCsv(filePath)
 	if err != nil {
 		t.Fatalf("%s", err)
@@ -203,6 +226,8 @@ func TestCreateSeparator(t *testing.T) {
 }
 
 func TestRemoveCol(t *testing.T) {
+	filePath := setup()
+
 	dataframe, err := NewFromCsv(filePath)
 	if err != nil {
 		t.Fatalf("%s", err)
