@@ -1,12 +1,14 @@
 
-# Joey Framework
+# Joey Framework -- Under Development
+
+Before reading this, keep in mind that this is a library which is under development. We don't recommend you to use this, until it is available on its first production version.
 
 Joey is a powerful framework for data manipulation and analysis developed in Go, designed to be efficient, flexible, and intuitive. It provides a robust interface for handling large volumes of data, making information processing and analysis simpler and more organized.
 
 ## Key Features
 
 - **Intuitive Data Structure:** Easily manipulate data using `Dataframe`, which organizes information into named columns.
-- **Columnar Operations:** Perform operations like sum, conversions, and column removal directly on columns.
+- **Columnar Operations:** Perform arithmetic operations like between columns.
 - **CSV Compatibility:** Easily load and manipulate data from CSV files.
 - **Data Visualization:** Print and view data in user-friendly and informative formats.
 - **Extensibility:** Create new cell types to meet your specific needs.
