@@ -17,6 +17,7 @@ func setup() string {
 }
 
 func main() {
+	joey.N_PROC = 8
 	dataframe, err := joey.NewFromCsv(setup())
 	if err != nil {
 		panic(err)

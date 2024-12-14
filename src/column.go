@@ -4,6 +4,7 @@ import (
 	"errors"
 	"joey/cells"
 	"reflect"
+	"sync"
 )
 
 type Column struct {
@@ -83,28 +84,73 @@ func (c *Column) validateToPerformArithmeticOperation(otherColumn Column) {
 	}
 }
 
+func (c *Column) calculateChunckSize() int {
+	return (len(c.Data) + N_PROC - 1) / N_PROC
+}
+
+func (c *Column) applyMultiProc(otherColumn Column, operation func(c1, c2 cells.Cell)) Column {
+	var wg sync.WaitGroup
+	chunkSize := c.calculateChunckSize()
+
+	// Creating processes
+	for i := 0; i < N_PROC; i++ {
+		start := i * chunkSize
+		end := start + chunkSize
+		if end > len(c.Data) {
+			end = len(c.Data)
+		}
+		wg.Add(1)
+		go func(start, end int) {
+			defer wg.Done()
+			for j := start; j < end; j++ {
+				operation(c.Data[j], otherColumn.Data[j])
+			}
+		}(start, end)
+	}
+
+	// Wait for the workers have finished
+	wg.Wait()
+
+	return *c
+}
+
 func (c *Column) Add(otherColumn Column) Column {
 	c.validateToPerformArithmeticOperation(otherColumn)
-	for i, cell := range c.Data {
-		cell.Add(otherColumn.Data[i])
+	if N_PROC == 1 {
+		for i, cell := range c.Data {
+			cell.Add(otherColumn.Data[i])
+		}
+		return *c
 	}
-	return *c
+	return c.applyMultiProc(otherColumn, func(c1, c2 cells.Cell) {
+		c1.Add(c2)
+	})
 }
 
 func (c *Column) Subtract(otherColumn Column) Column {
 	c.validateToPerformArithmeticOperation(otherColumn)
-	for i, cell := range c.Data {
-		cell.Subtract(otherColumn.Data[i])
+	if N_PROC == 1 {
+		for i, cell := range c.Data {
+			cell.Subtract(otherColumn.Data[i])
+		}
+		return *c
 	}
-	return *c
+	return c.applyMultiProc(otherColumn, func(c1, c2 cells.Cell) {
+		c1.Subtract(c2)
+	})
 }
 
 func (c *Column) Multiply(otherColumn Column) Column {
 	c.validateToPerformArithmeticOperation(otherColumn)
-	for i, cell := range c.Data {
-		cell.Multiply(otherColumn.Data[i])
+	if N_PROC == 1 {
+		for i, cell := range c.Data {
+			cell.Multiply(otherColumn.Data[i])
+		}
+		return *c
 	}
-	return *c
+	return c.applyMultiProc(otherColumn, func(c1, c2 cells.Cell) {
+		c1.Multiply(c2)
+	})
 }
 
 func (c *Column) Convert(to string) Column {
