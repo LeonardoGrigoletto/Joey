@@ -8,7 +8,8 @@ Joey is a powerful framework for data manipulation and analysis developed in Go,
 ## Key Features
 
 - **Intuitive Data Structure:** Easily manipulate data using `Dataframe`, which organizes information into named columns.
-- **Columnar Operations:** Perform arithmetic operations like between columns.
+- **Columnar Operations:** Perform arithmetic operations like Add, Subtract, and Multiply between columns.
+- **Multiprocessing Support:** Speed up column operations by utilizing multiple processors for parallel computation.
 - **CSV Compatibility:** Easily load and manipulate data from CSV files.
 - **Data Visualization:** Print and view data in user-friendly and informative formats.
 - **Extensibility:** Create new cell types to meet your specific needs.
@@ -36,6 +37,42 @@ func main() {
 ```
 
 ### Basic Operations
+
+#### Adding Columns (Single and Multi-Proc)
+
+```go
+// Single Proc
+joey.N_PROC = 1
+df.Column("charge").Add(*df.Column("walltime"))
+
+// Multi Proc
+joey.N_PROC = 8
+df.Column("charge").Add(*df.Column("walltime"))
+```
+
+#### Subtracting Columns
+
+```go
+// Single Proc
+joey.N_PROC = 1
+df.Column("charge").Subtract(*df.Column("walltime"))
+
+// Multi Proc
+joey.N_PROC = 8
+df.Column("charge").Subtract(*df.Column("walltime"))
+```
+
+#### Multiplying Columns
+
+```go
+// Single Proc
+joey.N_PROC = 1
+df.Column("charge").Multiply(*df.Column("walltime"))
+
+// Multi Proc
+joey.N_PROC = 8
+df.Column("charge").Multiply(*df.Column("walltime"))
+```
 
 #### Removing a Column
 
@@ -76,4 +113,3 @@ Feel free to open issues and pull requests on the GitHub repository. We are alwa
 ## License
 
 This project is licensed under the terms of the MIT license. See the LICENSE file for more details.
-
