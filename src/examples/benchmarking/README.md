@@ -1,5 +1,5 @@
 
-W# Joey Library - Examples and Benchmarking
+# Joey Library - Examples and Benchmarking
 
 This repository contains an example showcasing how to use the **Joey** library for column-based operations on dataframes. The included example demonstrates the performance difference between single-threaded and multi-threaded operations for adding, subtracting, and multiplying columns.
 
