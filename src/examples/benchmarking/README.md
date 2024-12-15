@@ -72,7 +72,7 @@ func main() {
 
 ## Additional Python Code Details
 
-### File: `benchmarking_columns.py`
+### File: `benchmarking_singleproc.py`
 
 This Python script provides a simple benchmarking example for performing arithmetic operations on dataframe columns.
 
@@ -83,7 +83,7 @@ This Python script provides a simple benchmarking example for performing arithme
 4. **Multiplying Columns**: Benchmarks the time to multiply the `charge` and `walltime` columns.
 5. **Performance Measurement**: The execution time for each operation is measured using the `time` module and printed in milliseconds.
 
-#### Python Code Example: `benchmarking_columns.py`
+#### Python Code Example: `benchmarking_singleproc.py`
 ```python
 import pandas as pd
 import time, os
@@ -135,7 +135,7 @@ if __name__ == "__main__":
 2. Run the Python script using:
 
    ```sh
-   python benchmarking_columns.py
+   python benchmarking_singleproc.py
    ```
 
 ---
