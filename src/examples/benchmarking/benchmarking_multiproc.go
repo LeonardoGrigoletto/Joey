@@ -34,14 +34,14 @@ func main() {
 	joey.N_PROC = 1
 	dataframe.Column("charge").Add(*dataframe.Column("walltime"))
 	duration := time.Since(start_time)
-	fmt.Printf("Single Proc Add Duration: %v seconds.\n", duration)
+	fmt.Printf("Single Proc Add Duration: %v.\n", duration)
 
 	// Multi Proc
 	start_time = time.Now()
 	joey.N_PROC = 8
 	dataframe.Column("charge").Add(*dataframe.Column("walltime"))
 	duration = time.Since(start_time)
-	fmt.Printf("Multi Proc Add Duration: %v seconds.\n\n", duration)
+	fmt.Printf("Multi Proc Add Duration: %v .\n\n", duration)
 
 	fmt.Println("----- Benchmarking Subtracting Columns -----")
 	// Subtracting a new column from another
@@ -50,14 +50,14 @@ func main() {
 	joey.N_PROC = 1
 	dataframe.Column("charge").Subtract(*dataframe.Column("walltime"))
 	duration = time.Since(start_time)
-	fmt.Printf("Single Proc Subtract Duration: %v seconds.\n", duration)
+	fmt.Printf("Single Proc Subtract Duration: %v .\n", duration)
 
 	// Multi Proc
 	start_time = time.Now()
 	joey.N_PROC = 8
 	dataframe.Column("charge").Subtract(*dataframe.Column("walltime"))
 	duration = time.Since(start_time)
-	fmt.Printf("Multi Proc Subtract Duration: %v seconds.\n\n", duration)
+	fmt.Printf("Multi Proc Subtract Duration: %v .\n\n", duration)
 
 	fmt.Println("----- Benchmarking Multiplying Columns -----")
 	// Subtracting a new column from another
@@ -66,13 +66,13 @@ func main() {
 	joey.N_PROC = 1
 	dataframe.Column("charge").Multiply(*dataframe.Column("walltime"))
 	duration = time.Since(start_time)
-	fmt.Printf("Single Proc Multiply Duration: %v seconds.\n", duration)
+	fmt.Printf("Single Proc Multiply Duration: %v .\n", duration)
 
 	// Multi Proc
 	start_time = time.Now()
 	joey.N_PROC = 8
 	dataframe.Column("charge").Multiply(*dataframe.Column("walltime"))
 	duration = time.Since(start_time)
-	fmt.Printf("Multi Proc Multiply Duration: %v seconds.\n\n", duration)
+	fmt.Printf("Multi Proc Multiply Duration: %v .\n\n", duration)
 
 }
